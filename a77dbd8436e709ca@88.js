@@ -10,7 +10,7 @@ function _chart($0)
 
 function _gallery(html,d3,cleanData)
 {
-    const container = html`<div style="padding: 20px; font-family: 'Inter', sans-serif; width: 100%; max-width: 600px; height: 620px;"></div>`;
+    const container = html`<div style="padding: 20px; font-family: 'Inter', sans-serif; width: 100%; max-width: 400px; height: 600px;"></div>`;
 
     const maxFilms = d3.max(cleanData, d => d.count_of_id);
     const maxVotes = d3.max(cleanData, d => d.sum_vote_count);
@@ -18,7 +18,7 @@ function _gallery(html,d3,cleanData)
     const topSection = html`<div style="display: flex; flex-direction: column; align-items: left; gap: 24px; margin-bottom: 60px;"></div>`;
     container.appendChild(topSection);
 
-    const select = html`<select style="font-size: 14px; padding: 10px; border: 1px solid #e53e3e; border-radius: 6px; background: white;">
+    const select = html`<select style="font-size: 12px; padding: 10px; border: 1px solid #e53e3e; border-radius: 6px; background: white;">
         <option value="count_of_id" selected>🎬 Top 20 Prolific Directors</option>
         <option value="sum_vote_count">👍 Top 20 Most Voted Directors</option>
         <option value="">🔽 View: All Directors Grid</option>
@@ -46,8 +46,8 @@ function _gallery(html,d3,cleanData)
             onmouseover="${() => card.style.transform = 'scale(1.03)'}"
             onmouseout="${() => card.style.transform = 'scale(1)'}">
             <img src="${d.director_image}" style="width: 90px; height: 90px; object-fit: cover; border-radius: 50%; border: ${d.count_of_id === maxFilms ? '3px solid gold' : 'none'}; box-shadow: ${d.sum_vote_count === maxVotes ? '0 0 10px 4px rgba(0,123,255,0.4)' : 'none'}; margin-bottom: 8px;" />
-            <strong style="font-size: 14px; color: white;">${d.director}${d.count_of_id === maxFilms ? '👑' : ''}${d.sum_vote_count === maxVotes ? '🔥' : ''}</strong>
-            <small style="font-size: 13px; color: white;">🎬 ${d.count_of_id} film(s)<br/>👍 ${d.sum_vote_count} votes</small>
+            <strong style="font-size: 10px; color: white;">${d.director}${d.count_of_id === maxFilms ? '👑' : ''}${d.sum_vote_count === maxVotes ? '🔥' : ''}</strong>
+            <small style="font-size: 10px; color: white;">🎬 ${d.count_of_id} film(s)<br/>👍 ${d.sum_vote_count} votes</small>
         </div>`;
         grid.appendChild(card);
     });
@@ -65,7 +65,7 @@ function _gallery(html,d3,cleanData)
 
         const top20 = [...cleanData].sort((a, b) => d3.descending(a[select.value], b[select.value])).slice(0, 20);
         const width = 500, height = 500;
-        const margin = { top: 5, right: 30, bottom: 20, left: 210};
+        const margin = { top: 5, right: 30, bottom: 20, left: 173};
 
         const svg = d3.create("svg").attr("width", width).attr("height", height);
 
@@ -123,7 +123,7 @@ function _gallery(html,d3,cleanData)
                     .attr("y", d => y(d.director) + y.bandwidth() / 2 + 4)
                     .text(d => d.director)
                     .attr("text-anchor", "end")
-                    .style("font-size", "12px")
+                    .style("font-size", "10px")
                     .style("font-family", "Inter")
                     .style("font-weight", "500")
                     .style("cursor", "pointer")
@@ -132,7 +132,7 @@ function _gallery(html,d3,cleanData)
                             <div style="text-align:center;">
                                 <img src="${d.director_image}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;margin-bottom:4px" />
                                 <div style="font-weight:600;">${d.director}</div>
-                                <div style="font-size:12px;">🎬 ${d.count_of_id} | 👍 ${d.sum_vote_count}</div>
+                                <div style="font-size:10px;">🎬 ${d.count_of_id} | 👍 ${d.sum_vote_count}</div>
                             </div>`;
                         tooltip.style.display = "block";
                     })
@@ -157,6 +157,7 @@ function _gallery(html,d3,cleanData)
     select.onchange();
     return container;
 }
+
 
 
 
