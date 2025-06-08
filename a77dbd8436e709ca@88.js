@@ -10,7 +10,7 @@ function _chart($0)
 
 function _gallery(html,d3,cleanData)
 {
-    const container = html`<div style="padding: 20px; font-family: 'Inter', sans-serif; width: 100%; max-width: 400px; height: 600px;"></div>`;
+   const container = html`<div style="padding: 20px; font-family: 'Inter', sans-serif; width: 100%; max-width: 400px; height: 600px;"></div>`;
 
     const maxFilms = d3.max(cleanData, d => d.count_of_id);
     const maxVotes = d3.max(cleanData, d => d.sum_vote_count);
@@ -157,6 +157,7 @@ function _gallery(html,d3,cleanData)
     select.onchange();
     return container;
 }
+
 
 
 
