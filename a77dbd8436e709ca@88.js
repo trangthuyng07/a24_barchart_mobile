@@ -154,8 +154,6 @@ function _gallery(html,d3,cleanData)
 
 
 
-
-
 function _cleanData(data){return(
 data.filter(d =>
   typeof d.sum_vote_count === "number" &&
