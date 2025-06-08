@@ -33,7 +33,7 @@ function _gallery(html,d3,cleanData)
 
   const sorted = [...cleanData].sort((a, b) => d3.descending(a.count_of_id, b.count_of_id));
   sorted.forEach(d => {
-    const card = html`<div style="background: #000; border-radius: 12px; padding: 10px; width: 80%; text-align: center; transition: transform 0.2s; display: flex; flex-direction: column; align-items: center;"
+    const card = html`<div style="background: #000; border-radius: 12px; padding: 10px; width: %; text-align: center; transition: transform 0.2s; display: flex; flex-direction: column; align-items: center;"
       onmouseover="${() => card.style.transform = 'scale(1.03)'}"
       onmouseout="${() => card.style.transform = 'scale(1)'}">
         <img src="${d.director_image}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; border: ${d.count_of_id === maxFilms ? '3px solid gold' : 'none'}; box-shadow: ${d.sum_vote_count === maxVotes ? '0 0 10px 4px rgba(0,123,255,0.4)' : 'none'}; margin-bottom: 6px;" />
@@ -90,39 +90,47 @@ function _gallery(html,d3,cleanData)
     const tooltip = html`<div style="position: absolute; pointer-events: none; background: white; border: 1px solid #ccc; padding: 6px 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-size: 10px; display: none; z-index: 10; font-family: 'Inter';"></div>`;
     chartBox.appendChild(tooltip);
 
-    svg.append("g")
-      .selectAll("text.name-label")
-      .data(top20, d => d.director)
-      .join("text")
-      .attr("class", "name-label")
+   svg.append("g")
+  .selectAll("text.name-label")
+  .data(top20, d => d.director)
+  .join("text")
+  .attr("class", "name-label")
+  .attr("x", margin.left - 6)
+  .attr("y", d => y(d.director) + y.bandwidth() / 2)
+  .attr("text-anchor", "end")
+  .style("font-size", "8px")
+  .style("font-family", "Inter")
+  .style("cursor", "pointer")
+  .each(function(d) {
+    const lines = d.director.split(",").map(s => s.trim());
+    d3.select(this)
+      .selectAll("tspan")
+      .data(lines)
+      .join("tspan")
       .attr("x", margin.left - 6)
-      .attr("y", d => y(d.director) + y.bandwidth() / 2 + 3)
-      .text(d => d.director)
-      .attr("text-anchor", "end")
-      .style("font-size", "10px")
-      .style("font-family", "Inter")
-      .style("cursor", "pointer")
-      .on("mouseover", (event, d) => {
-        tooltip.innerHTML = `
-          <div style="text-align:center;">
-            <img src="${d.director_image}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;margin-bottom:4px" />
-            <div style="font-weight:600;">${d.director}</div>
-            <div style="font-size:10px;">🎬 ${d.count_of_id} | 👍 ${d.sum_vote_count}</div>
-          </div>`;
-        tooltip.style.display = "block";
-      })
-      .on("mousemove", event => {
-        const tooltipWidth = tooltip.offsetWidth;
-        const tooltipHeight = tooltip.offsetHeight;
-        const padding = 10;
-        const bounds = chartBox.getBoundingClientRect();
-        const mouseX = event.clientX - bounds.left;
-        const mouseY = event.clientY - bounds.top;
-        tooltip.style.left = `${(mouseX + tooltipWidth + padding > bounds.width) ? (mouseX - tooltipWidth - padding) : (mouseX + padding)}px`;
-        tooltip.style.top = `${(mouseY + tooltipHeight + padding > bounds.height) ? (mouseY - tooltipHeight - padding) : (mouseY + padding)}px`;
-      })
-      .on("mouseout", () => tooltip.style.display = "none");
-
+      .attr("dy", (_, i) => i === 0 ? 0 : "1.1em")
+      .text(s => s);
+  })
+  .on("mouseover", (event, d) => {
+    tooltip.innerHTML = `
+      <div style="text-align:center;">
+        <img src="${d.director_image}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;margin-bottom:4px" />
+        <div style="font-weight:600;">${d.director}</div>
+        <div style="font-size:10px;">🎬 ${d.count_of_id} | 👍 ${d.sum_vote_count}</div>
+      </div>`;
+    tooltip.style.display = "block";
+  })
+  .on("mousemove", event => {
+    const tooltipWidth = tooltip.offsetWidth;
+    const tooltipHeight = tooltip.offsetHeight;
+    const padding = 10;
+    const bounds = chartBox.getBoundingClientRect();
+    const mouseX = event.clientX - bounds.left;
+    const mouseY = event.clientY - bounds.top;
+    tooltip.style.left = `${(mouseX + tooltipWidth + padding > bounds.width) ? (mouseX - tooltipWidth - padding) : (mouseX + padding)}px`;
+    tooltip.style.top = `${(mouseY + tooltipHeight + padding > bounds.height) ? (mouseY - tooltipHeight - padding) : (mouseY + padding)}px`;
+  })
+  .on("mouseout", () => tooltip.style.display = "none");
     // Shuffle animation on click
     svg.on("click", () => {
       const shuffled = d3.shuffle(top20);
@@ -143,7 +151,6 @@ function _gallery(html,d3,cleanData)
   select.onchange();
   return container;
 }
-
 
 
 
