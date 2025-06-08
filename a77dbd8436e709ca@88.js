@@ -25,15 +25,15 @@ function _gallery(html,d3,cleanData)
   </select>`;
   topSection.appendChild(select);
 
-  const chartBox = html`<div style="width: 100%; margin: 0 auto; display: flex; justify-content: center; align-items: center; position: relative;"></div>`;
+  const chartBox = html`<div style="width: 90%; margin: 0 auto; display: flex; justify-content: center; align-items: center; position: relative;"></div>`;
   topSection.appendChild(chartBox);
 
-  const grid = html`<div style="display: grid; grid-template-columns: repeat(1, 1fr); gap: 24px; justify-content: center; align-items: stretch; width: 100%; max-width: 300px; margin: 0 auto; padding: 10px; overflow-y: auto;"></div>`;
+  const grid = html`<div style="display: grid; grid-template-columns: repeat(1, 1fr); gap: 24px; justify-content: center; align-items: stretch; width: 80%; max-width: 250px;max-height: 500px; margin: 0 auto; padding: 10px; overflow-y: auto;"></div>`;
   container.appendChild(grid);
 
   const sorted = [...cleanData].sort((a, b) => d3.descending(a.count_of_id, b.count_of_id));
   sorted.forEach(d => {
-    const card = html`<div style="background: #000; border-radius: 12px; padding: 10px; width: 100%; text-align: center; transition: transform 0.2s; display: flex; flex-direction: column; align-items: center;"
+    const card = html`<div style="background: #000; border-radius: 12px; padding: 10px; width: 80%; text-align: center; transition: transform 0.2s; display: flex; flex-direction: column; align-items: center;"
       onmouseover="${() => card.style.transform = 'scale(1.03)'}"
       onmouseout="${() => card.style.transform = 'scale(1)'}">
         <img src="${d.director_image}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; border: ${d.count_of_id === maxFilms ? '3px solid gold' : 'none'}; box-shadow: ${d.sum_vote_count === maxVotes ? '0 0 10px 4px rgba(0,123,255,0.4)' : 'none'}; margin-bottom: 6px;" />
@@ -143,6 +143,7 @@ function _gallery(html,d3,cleanData)
   select.onchange();
   return container;
 }
+
 
 
 
