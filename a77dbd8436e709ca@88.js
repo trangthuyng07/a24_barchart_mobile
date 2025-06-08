@@ -10,7 +10,6 @@ function _chart($0)
 
 function _gallery(html,d3,cleanData)
 {
-  viewof gallery = {
   const container = html`<div style="padding: 20px; font-family: 'Inter', sans-serif; width: 100%; max-width: 300px;"></div>`;
 
   const maxFilms = d3.max(cleanData, d => d.count_of_id);
